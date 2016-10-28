@@ -11,4 +11,7 @@ public interface OnGrantedListener {
     void onGranted(String permission);
 
     void onDenied();
+
+    void onNeverAsk();
+
 }

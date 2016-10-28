@@ -1,6 +1,5 @@
 package snail.permissioncompat;
 
-import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +11,7 @@ import android.util.SparseArray;
  * Des:
  * version:
  */
-public class PermissionCompatActivity extends AppCompatActivity {
+public class BasePermissionCompatActivity extends AppCompatActivity {
 
 
     private SparseArray<OnGrantedListener> mOnGrantedListeners = new SparseArray<>();
@@ -44,20 +43,23 @@ public class PermissionCompatActivity extends AppCompatActivity {
         mOnGrantedListeners = null;
     }
 
-    public void requestPermissions(final @NonNull Activity activity,
-                                   final @NonNull String[] permissions, final int requestCode) {
-        ActivityCompat.requestPermissions(activity, permissions, requestCode);
+    public void requestPermissions(final @NonNull String[] permissions) {
+        ActivityCompat.requestPermissions(this, permissions, getNextRequestCode());
     }
 
-    public void requestPermissions(final @NonNull Activity activity,
-                                   final @NonNull String permission, final int requestCode) {
+    public void requestPermissions(final @NonNull String permission) {
         String[] permissions = new String[1];
         permissions[0] = permission;
-        ActivityCompat.requestPermissions(activity, permissions, requestCode);
+        ActivityCompat.requestPermissions(this, permissions, getNextRequestCode());
     }
 
     @Override
     public boolean shouldShowRequestPermissionRationale(String permission) {
         return super.shouldShowRequestPermissionRationale(permission);
+    }
+
+    private static int getNextRequestCode() {
+
+        return 1;
     }
 }

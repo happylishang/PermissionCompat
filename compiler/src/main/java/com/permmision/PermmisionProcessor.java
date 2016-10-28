@@ -16,7 +16,11 @@ public class PermmisionProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(ActivityPermmision.class);
+
+//        Activity$Permmison
         //查询所有的Activity 并根据里面的方法生成相应的回调
+//        JavaFile.builder()
         return true;
     }
+
 }
