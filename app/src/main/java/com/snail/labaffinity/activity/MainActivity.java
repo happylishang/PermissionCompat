@@ -12,6 +12,7 @@ import com.snail.labaffinity.R;
 import com.snail.labaffinity.service.BackGroundService;
 import com.snail.labaffinity.utils.ToastUtil;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.campusapp.router.Router;
@@ -45,6 +46,8 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    @BindView(R.id.first)
+    View mView;
     @OnClick(R.id.first)
     void first() {
         Observable.create(new Observable.OnSubscribe<Object>() {

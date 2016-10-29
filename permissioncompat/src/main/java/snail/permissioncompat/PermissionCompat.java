@@ -1,5 +1,7 @@
 package snail.permissioncompat;
 
+import com.annotation.annotion.OnGrantedListener;
+
 /**
  * Author: hzlishang
  * Data: 16/10/28 下午5:39
