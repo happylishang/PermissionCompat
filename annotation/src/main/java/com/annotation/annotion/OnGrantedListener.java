@@ -1,4 +1,4 @@
-package snail.permissioncompat;
+package com.annotation.annotion;
 
 /**
  * Author: hzlishang
@@ -8,10 +8,11 @@ package snail.permissioncompat;
  */
 public interface OnGrantedListener {
 
-    void onGranted(String permission);
+    void onGranted();
 
     void onDenied();
 
     void onNeverAsk();
 
+    void OnShowRationale();
 }

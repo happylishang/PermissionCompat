@@ -25,7 +25,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile "com.android.support:appcompat-v7:${APPCOMPAT_V7_VERSION}"
     compile 'com.android.support:design:23.3.0'
     compile 'io.reactivex:rxjava:1.1.8'
     compile 'io.reactivex:rxandroid:1.2.1'
@@ -34,6 +34,6 @@ dependencies {
     apt 'com.github.campusappcn.AndRouter:compiler:1.2.4'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
     compile project(':permissioncompat')
-
+    apt project(':compiler')
 //    参考文档：porthttp://www.jianshu.com/p/95f12f72f69a
 }

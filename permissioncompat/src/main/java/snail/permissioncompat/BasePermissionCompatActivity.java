@@ -5,6 +5,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 
+import com.annotation.annotion.OnGrantedListener;
+
 /**
  * Author: hzlishang
  * Data: 16/10/12 上午11:37
@@ -59,7 +61,6 @@ public class BasePermissionCompatActivity extends AppCompatActivity {
     }
 
     private static int getNextRequestCode() {
-
         return 1;
     }
 }

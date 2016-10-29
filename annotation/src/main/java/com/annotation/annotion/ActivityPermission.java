@@ -1,4 +1,4 @@
-package com.permmision.annotion;
+package com.annotation.annotion;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,5 +13,5 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
-public @interface ActivityPermmision {
+public @interface ActivityPermission {
 }

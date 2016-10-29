@@ -1,4 +1,4 @@
-package com.permmision.annotion;
+package com.annotation.annotion;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,7 +11,8 @@ import java.lang.annotation.Target;
  * Des:
  * version:
  */
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.CLASS)
-@Target(ElementType.TYPE)
 public @interface OnDenied {
+    String[] value();
 }

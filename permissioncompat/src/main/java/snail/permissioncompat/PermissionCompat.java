@@ -19,4 +19,21 @@ public class PermissionCompat {
 //    private static Elementrequest findElementrequest() {
 //
 //    }
+
+
+    static void checkPermmison(BasePermissionCompatActivity target) {
+        if (PermissionUtils.hasSelfPermissions(target, null)) {
+        } else {
+            if (PermissionUtils.shouldShowRequestPermissionRationale(target, null)) {
+//                target
+            } else {
+//                ActivityCompat.requestPermissions(target, {"",""},1);
+            }
+        }
+    }
+
+    private OnGrantedListener findGrantedListener() {
+        OnGrantedListener listener = null;
+        return listener;
+    }
 }
