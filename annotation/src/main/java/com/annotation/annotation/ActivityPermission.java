@@ -1,4 +1,4 @@
-package com.annotation.annotion;
+package com.annotation.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,10 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Register some methods which explain why permissions are needed.
+ * Author: hzlishang
+ * Data: 16/10/12 上午11:31
+ * Des:
+ * version:
  */
-@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.CLASS)
-public @interface OnShowRationale {
-    String[] value();
+@Target(ElementType.TYPE)
+public @interface ActivityPermission {
 }

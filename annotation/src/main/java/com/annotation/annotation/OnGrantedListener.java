@@ -1,4 +1,4 @@
-package com.annotation.annotion;
+package com.annotation.annotation;
 
 /**
  * Author: hzlishang
@@ -14,5 +14,5 @@ public interface OnGrantedListener<T> {
 
     void onNeverAsk(T target);
 
-    void OnShowRationale(T target);
+    void onShowRationale(T target);
 }

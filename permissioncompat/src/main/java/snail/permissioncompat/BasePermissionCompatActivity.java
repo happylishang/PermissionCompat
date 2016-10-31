@@ -5,7 +5,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 
-import com.annotation.annotion.OnGrantedListener;
+import com.annotation.annotation.OnGrantedListener;
 
 /**
  * Author: hzlishang

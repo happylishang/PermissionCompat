@@ -1,4 +1,4 @@
-package com.annotation.annotion;
+package com.annotation.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,7 +11,8 @@ import java.lang.annotation.Target;
  * Des:
  * version:
  */
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.CLASS)
-@Target(ElementType.TYPE)
-public @interface ActivityPermission {
+public @interface OnGranted {
+    String[] value();
 }

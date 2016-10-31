@@ -2,8 +2,9 @@ package com.snail.labaffinity.activity;
 
 import android.os.Bundle;
 
-import com.annotation.annotion.OnDenied;
-import com.annotation.annotion.OnGranted;
+import com.annotation.annotation.ActivityPermission;
+import com.annotation.annotation.OnDenied;
+import com.annotation.annotation.OnGranted;
 import com.snail.labaffinity.R;
 
 import cn.campusapp.router.annotation.RouterMap;
@@ -14,7 +15,7 @@ import cn.campusapp.router.annotation.RouterMap;
  * Des:
  * version:
  */
-
+@ActivityPermission
 @RouterMap({"activity://second"})
 public class SecondActivity extends BaseActivity {
 
@@ -31,11 +32,6 @@ public class SecondActivity extends BaseActivity {
 
     @OnDenied(value = {"first", "second"})
     void onDenied() {
-
-    }
-
-    @OnGranted(value = {"first"})
-    void onGrantedFirst() {
 
     }
 }

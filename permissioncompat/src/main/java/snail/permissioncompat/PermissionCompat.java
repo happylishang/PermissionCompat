@@ -3,7 +3,7 @@ package snail.permissioncompat;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
-import com.annotation.annotion.OnGrantedListener;
+import com.annotation.annotation.OnGrantedListener;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,13 +17,11 @@ import java.util.Map;
 public class PermissionCompat {
 
 
-    static void checkPermmisons(BasePermissionCompatActivity target) {
-        if (PermissionUtils.hasSelfPermissions(target, null)) {
+    static void checkPermmisons(BasePermissionCompatActivity target,String [] permissons) {
+        if (PermissionUtils.hasSelfPermissions(target, permissons)) {
         } else {
-            if (PermissionUtils.shouldShowRequestPermissionRationale(target, null)) {
-//                target
+            if (PermissionUtils.shouldShowRequestPermissionRationale(target, permissons)) {
             } else {
-//                ActivityCompat.startRequest(target, {"",""},1);
             }
         }
     }
@@ -36,14 +34,14 @@ public class PermissionCompat {
         Class<?> targetClass = target.getClass();
         try {
             int requestCode = getNextRequestCode();
-            OnGrantedListener<? extends BasePermissionCompatActivity> listener = findOnGrantedListenerForClass(targetClass);
+            OnGrantedListener<? extends BasePermissionCompatActivity> listener = findOnGrantedListenerForClass(targetClass, permissions);
             startRequest(target, listener, permissions);
         } catch (Exception e) {
             throw new RuntimeException("Unable to bind views for " + targetClass.getName(), e);
         }
     }
 
-    private static OnGrantedListener<? extends BasePermissionCompatActivity> findOnGrantedListenerForClass(Class<?> cls)
+    private static OnGrantedListener<? extends BasePermissionCompatActivity> findOnGrantedListenerForClass(Class<?> cls, String[] permissions)
             throws IllegalAccessException, InstantiationException {
         OnGrantedListener<? extends BasePermissionCompatActivity> viewBinder = BINDERS.get(cls);
         if (viewBinder != null) {
@@ -54,7 +52,7 @@ public class PermissionCompat {
             Class<?> listenerClass = Class.forName(clsName + "$$OnGrantedListener");
             viewBinder = (OnGrantedListener<? extends BasePermissionCompatActivity>) listenerClass.newInstance();
         } catch (ClassNotFoundException e) {
-            viewBinder = findOnGrantedListenerForClass(cls.getSuperclass());
+            viewBinder = findOnGrantedListenerForClass(cls.getSuperclass(), permissions);
         }
         BINDERS.put(cls, viewBinder);
         return viewBinder;
