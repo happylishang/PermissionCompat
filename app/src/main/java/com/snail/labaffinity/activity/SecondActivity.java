@@ -2,6 +2,8 @@ package com.snail.labaffinity.activity;
 
 import android.os.Bundle;
 
+import com.annotation.annotion.OnDenied;
+import com.annotation.annotion.OnGranted;
 import com.snail.labaffinity.R;
 
 import cn.campusapp.router.annotation.RouterMap;
@@ -20,5 +22,20 @@ public class SecondActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    @OnGranted(value = {"first", "second"})
+    void granted() {
+
+    }
+
+    @OnDenied(value = {"first", "second"})
+    void onDenied() {
+
+    }
+
+    @OnGranted(value = {"first"})
+    void onGrantedFirst() {
+
     }
 }

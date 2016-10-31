@@ -6,13 +6,13 @@ package com.annotation.annotion;
  * Des:分组、单个
  * version:
  */
-public interface OnGrantedListener {
+public interface OnGrantedListener<T> {
 
-    void onGranted();
+    void onGranted(T target);
 
-    void onDenied();
+    void onDenied(T target);
 
-    void onNeverAsk();
+    void onNeverAsk(T target);
 
-    void OnShowRationale();
+    void OnShowRationale(T target);
 }

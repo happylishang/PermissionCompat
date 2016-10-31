@@ -18,7 +18,7 @@ public class BasePermissionCompatActivity extends AppCompatActivity {
 
     private SparseArray<OnGrantedListener> mOnGrantedListeners = new SparseArray<>();
 
-    private void addOnGrantedListener(int requestCode, OnGrantedListener onGrantedListener) {
+    public void addOnGrantedListener(int requestCode, OnGrantedListener onGrantedListener) {
         mOnGrantedListeners.put(requestCode, onGrantedListener);
     }
 
@@ -45,22 +45,8 @@ public class BasePermissionCompatActivity extends AppCompatActivity {
         mOnGrantedListeners = null;
     }
 
-    public void requestPermissions(final @NonNull String[] permissions) {
-        ActivityCompat.requestPermissions(this, permissions, getNextRequestCode());
-    }
-
-    public void requestPermissions(final @NonNull String permission) {
-        String[] permissions = new String[1];
-        permissions[0] = permission;
-        ActivityCompat.requestPermissions(this, permissions, getNextRequestCode());
-    }
-
     @Override
     public boolean shouldShowRequestPermissionRationale(String permission) {
         return super.shouldShowRequestPermissionRationale(permission);
-    }
-
-    private static int getNextRequestCode() {
-        return 1;
     }
 }
