@@ -17,7 +17,7 @@ import java.util.Map;
 public class PermissionCompat {
 
 
-    static void checkPermmisons(BasePermissionCompatActivity target,String [] permissons) {
+    static void checkPermmisons(BasePermissionCompatActivity target, String[] permissons) {
         if (PermissionUtils.hasSelfPermissions(target, permissons)) {
         } else {
             if (PermissionUtils.shouldShowRequestPermissionRationale(target, permissons)) {
@@ -60,7 +60,7 @@ public class PermissionCompat {
 
     private static void startRequest(BasePermissionCompatActivity target, OnGrantedListener listener, final @NonNull String[] permissions) {
         int requestCode = getNextRequestCode();
-        target.addOnGrantedListener(requestCode, listener);
+        target.setOnGrantedListener(listener);
         ActivityCompat.requestPermissions(target, permissions, getNextRequestCode());
     }
 

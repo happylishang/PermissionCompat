@@ -8,11 +8,11 @@ package com.annotation.annotation;
  */
 public interface OnGrantedListener<T> {
 
-    void onGranted(T target);
+    void onGranted(T target,String[] permissions);
 
-    void onDenied(T target);
+    void onDenied(T target,String[] permissions);
 
-    void onNeverAsk(T target);
+    void onNeverAsk(T target,String[] permissions);
 
-    void onShowRationale(T target);
+    void onShowRationale(T target,String[] permissions);
 }
