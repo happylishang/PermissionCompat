@@ -31,6 +31,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
+import javax.tools.Diagnostic;
 
 @AutoService(Processor.class)
 public class PermissionProcessor extends AbstractProcessor {
@@ -51,10 +52,12 @@ public class PermissionProcessor extends AbstractProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(ActivityPermission.class);
 
+        if (!checkIntegrity(roundEnv))
+            return false;
+
         for (Element element : elements) {
             TypeElement typeElement = (TypeElement) element;
             List<? extends Element> members = elementUtils.getAllMembers(typeElement);
-
             for (Element item : members) {
                 OnGranted grantedAnnotation = item.getAnnotation(OnGranted.class);
                 if (grantedAnnotation != null) {
@@ -145,6 +148,56 @@ public class PermissionProcessor extends AbstractProcessor {
         elementUtils = env.getElementUtils();
     }
 
+    private boolean checkIntegrity(RoundEnvironment roundEnv) {
+        Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(ActivityPermission.class);
+
+        for (Element element : elements) {
+            TypeElement typeElement = (TypeElement) element;
+            List<? extends Element> members = elementUtils.getAllMembers(typeElement);
+            for (Element item : members) {
+                OnGranted grantedAnnotation = item.getAnnotation(OnGranted.class);
+                if (grantedAnnotation != null) {
+                    String[] params = grantedAnnotation.value();
+                    Element deny = null;
+                    Element neverAsk = null;
+                    Element showRationale = null;
+                    for (Element other : members) {
+                        OnDenied tmpOnDenied = other.getAnnotation(OnDenied.class);
+                        if (tmpOnDenied != null && Arrays.equals(tmpOnDenied.value(), params)) {
+                            deny = other;
+                            continue;
+                        }
+                        OnNeverAsk tmpNeverAsk = other.getAnnotation(OnNeverAsk.class);
+                        if (tmpNeverAsk != null && Arrays.equals(tmpNeverAsk.value(), params)) {
+                            neverAsk = item;
+                            continue;
+                        }
+                        OnShowRationale tmpShowRationale = other.getAnnotation(OnShowRationale.class);
+                        if (tmpShowRationale != null && Arrays.equals(tmpShowRationale.value(), params)) {
+                            showRationale = item;
+                        }
+                    }
+
+                    if (deny == null) {
+                        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "need OnDenied func ", element);
+                        return false;
+                    }
+
+                    if (neverAsk == null) {
+                        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "need OnNeverAsk func ", element);
+                        return false;
+                    }
+
+                    if (showRationale == null) {
+                        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "need OnShowRationale func ", element);
+                        return false;
+                    }
+                }
+            }
+
+        }
+        return true;
+    }
 
     @Override
     public SourceVersion getSupportedSourceVersion() {
