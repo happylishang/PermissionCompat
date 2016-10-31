@@ -5,6 +5,8 @@ import android.os.Bundle;
 import com.annotation.annotation.ActivityPermission;
 import com.annotation.annotation.OnDenied;
 import com.annotation.annotation.OnGranted;
+import com.annotation.annotation.OnNeverAsk;
+import com.annotation.annotation.OnShowRationale;
 import com.snail.labaffinity.R;
 
 import cn.campusapp.router.annotation.RouterMap;
@@ -34,4 +36,14 @@ public class SecondActivity extends BaseActivity {
     void onDenied() {
 
     }
+
+    @OnNeverAsk(value = {"first", "second"})
+    void OnNeverAsk() {
+
+    }
+    @OnShowRationale(value = {"first", "second"})
+    void OnShowRationale() {
+
+    }
+
 }

@@ -35,5 +35,4 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
     compile project(':permissioncompat')
     apt project(':compiler')
-//    参考文档：porthttp://www.jianshu.com/p/95f12f72f69a
 }

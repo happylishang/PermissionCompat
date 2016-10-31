@@ -17,6 +17,7 @@ import com.squareup.javapoet.TypeSpec;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,13 +46,6 @@ public class PermissionProcessor extends AbstractProcessor {
         return annotations;
     }
 
-    interface State {
-        int OnDenied = 1;
-        int OnGranted = 2;
-        int OnNeverAsk = 3;
-        int OnShowRationale = 4;
-
-    }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -64,6 +58,12 @@ public class PermissionProcessor extends AbstractProcessor {
             for (Element item : members) {
                 OnGranted grantedAnnotation = item.getAnnotation(OnGranted.class);
                 if (grantedAnnotation != null) {
+
+                    String[] params = grantedAnnotation.value();
+                    Element deny = null;
+                    Element neverAsk = null;
+                    Element showRationale = null;
+
                     TypeSpec.Builder builder = TypeSpec.classBuilder(element.getSimpleName() + item.getSimpleName().toString() + "$Listener")
                             .addSuperinterface(ParameterizedTypeName.get(ClassName.bestGuess(OnGrantedListener.class.getTypeName()), ClassName.bestGuess(element.getSimpleName().toString())))
                             .addModifiers(Modifier.PUBLIC, Modifier.FINAL);
@@ -73,60 +73,56 @@ public class PermissionProcessor extends AbstractProcessor {
                             .addAnnotation(Override.class)
                             .returns(TypeName.VOID)
                             .addParameter(ClassName.get(typeElement.asType()), "activity");
+                    bindViewMethodSpecBuilder.addStatement(String.format("activity.%s()", item.getSimpleName().toString()));
                     builder.addMethod(bindViewMethodSpecBuilder.build());
-                    String[] params = grantedAnnotation.value();
-                    for (Element element1 : members) {
-                        Annotation deniedAnnotation = item.getAnnotation(Annotation.class);
-                        int index = -1;
-                        if (deniedAnnotation instanceof OnDenied) {
-                            index = State.OnDenied;
-                        } else if (deniedAnnotation instanceof OnNeverAsk) {
-                            index = State.OnNeverAsk;
-                        } else if (deniedAnnotation instanceof OnShowRationale) {
-                            index = State.OnShowRationale;
+                    for (Element other : members) {
+                        OnDenied tmpOnDenied = other.getAnnotation(OnDenied.class);
+                        if (tmpOnDenied != null && Arrays.equals(tmpOnDenied.value(), params)) {
+                            deny = other;
+                            continue;
                         }
-                        if (index > 0) {
-                            switch (index) {
-                                case State.OnDenied:
-                                    OnDenied deny = (OnDenied) deniedAnnotation;
-                                    if (deny.value().equals(params)) {
-                                        bindViewMethodSpecBuilder = MethodSpec.methodBuilder("onDenied");
-                                        bindViewMethodSpecBuilder.addModifiers(Modifier.PUBLIC)
-                                                .addAnnotation(Override.class)
-                                                .returns(TypeName.VOID)
-                                                .addParameter(ClassName.get(typeElement.asType()), "activity");
-                                        bindViewMethodSpecBuilder.addStatement(String.format("activity.%s()", element1.getSimpleName().toString()));
 
-                                    }
-                                    break;
-                                case State.OnNeverAsk:
-                                    OnNeverAsk neverAsk = (OnNeverAsk) deniedAnnotation;
-                                    if (neverAsk.value().equals(params)) {
-                                        bindViewMethodSpecBuilder = MethodSpec.methodBuilder("onNeverAsk");
-                                        bindViewMethodSpecBuilder.addModifiers(Modifier.PUBLIC)
-                                                .addAnnotation(Override.class)
-                                                .returns(TypeName.VOID)
-                                                .addParameter(ClassName.get(typeElement.asType()), "activity");
-                                        bindViewMethodSpecBuilder.addStatement(String.format("activity.%s()", element1.getSimpleName().toString()));
-
-                                    }
-                                    break;
-                                case State.OnShowRationale:
-                                    OnShowRationale showRationale = (OnShowRationale) deniedAnnotation;
-                                    if (showRationale.value().equals(params)) {
-                                        bindViewMethodSpecBuilder = MethodSpec.methodBuilder("onShowRationale");
-                                        bindViewMethodSpecBuilder.addModifiers(Modifier.PUBLIC)
-                                                .addAnnotation(Override.class)
-                                                .returns(TypeName.VOID)
-                                                .addParameter(ClassName.get(typeElement.asType()), "activity");
-                                        bindViewMethodSpecBuilder.addStatement(String.format("activity.%s()", element1.getSimpleName().toString()));
-
-                                    }
-                                    break;
-
-                            }
+                        OnNeverAsk tmpNeverAsk = other.getAnnotation(OnNeverAsk.class);
+                        if (tmpNeverAsk != null && Arrays.equals(tmpNeverAsk.value(), params)) {
+                            neverAsk = item;
+                            continue;
+                        }
+                        OnShowRationale tmpShowRationale = other.getAnnotation(OnShowRationale.class);
+                        if (tmpShowRationale != null && Arrays.equals(tmpShowRationale.value(), params)) {
+                            showRationale = item;
                         }
                     }
+
+                    bindViewMethodSpecBuilder = MethodSpec.methodBuilder("onDenied")
+                            .addModifiers(Modifier.PUBLIC)
+                            .addAnnotation(Override.class)
+                            .returns(TypeName.VOID)
+                            .addParameter(ClassName.get(typeElement.asType()), "activity");
+                    if (deny != null) {
+                        bindViewMethodSpecBuilder.addStatement(String.format("activity.%s()", deny.getSimpleName().toString()));
+                    }
+                    builder.addMethod(bindViewMethodSpecBuilder.build());
+
+                    bindViewMethodSpecBuilder = MethodSpec.methodBuilder("onNeverAsk")
+                            .addModifiers(Modifier.PUBLIC)
+                            .addAnnotation(Override.class)
+                            .returns(TypeName.VOID)
+                            .addParameter(ClassName.get(typeElement.asType()), "activity");
+                    if (neverAsk != null) {
+                        bindViewMethodSpecBuilder.addStatement(String.format("activity.%s()", neverAsk.getSimpleName().toString()));
+                    }
+                    builder.addMethod(bindViewMethodSpecBuilder.build());
+
+                    bindViewMethodSpecBuilder = MethodSpec.methodBuilder("onShowRationale")
+                            .addModifiers(Modifier.PUBLIC)
+                            .addAnnotation(Override.class)
+                            .returns(TypeName.VOID)
+                            .addParameter(ClassName.get(typeElement.asType()), "activity");
+                    if (showRationale != null) {
+                        bindViewMethodSpecBuilder.addStatement(String.format("activity.%s()", showRationale.getSimpleName().toString()));
+                    }
+                    builder.addMethod(bindViewMethodSpecBuilder.build());
+
 
                     TypeSpec typeSpec = builder.build();
                     JavaFile javaFile = JavaFile.builder(getPackageName(typeElement), typeSpec).build();
@@ -136,8 +132,6 @@ public class PermissionProcessor extends AbstractProcessor {
                         e.printStackTrace();
                     }
                 }
-
-
             }
 
         }
