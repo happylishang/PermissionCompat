@@ -44,6 +44,7 @@ public class SecondActivity extends BaseActivity {
     @OnNeverAsk(value = {Manifest.permission.CAMERA})
     void OnNeverAsk() {
         LogUtils.v("OnNeverAsk");
+        starSettingActivityForPermission(1000);
     }
 
     @OnShowRationale(value = {Manifest.permission.CAMERA})

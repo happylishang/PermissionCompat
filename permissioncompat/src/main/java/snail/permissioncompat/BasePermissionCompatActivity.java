@@ -1,5 +1,8 @@
 package snail.permissioncompat;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
@@ -16,6 +19,9 @@ public class BasePermissionCompatActivity extends AppCompatActivity {
 
     private OnGrantedListener<BasePermissionCompatActivity> mOnGrantedListener;
 
+    public void setOnGrantedListener(OnGrantedListener<BasePermissionCompatActivity> onGrantedListener) {
+        mOnGrantedListener = onGrantedListener;
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -38,26 +44,19 @@ public class BasePermissionCompatActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 去设置页面请求权限，回来后Activity要自己控制后续流程
+     */
+    public void starSettingActivityForPermission(int requestCode) {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivityForResult(intent, requestCode);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mOnGrantedListener = null;
-    }
-
-    @Override
-    public boolean shouldShowRequestPermissionRationale(String permission) {
-        return super.shouldShowRequestPermissionRationale(permission);
-    }
-
-
-    public void setOnGrantedListener(OnGrantedListener onGrantedListener) {
-        mOnGrantedListener = onGrantedListener;
-    }
-
-    public void jumpToSettingForPermissions() {
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", getPackageName(), null);
-        intent.setData(uri);
-        startActivityForResult(intent, 1000);
     }
 }
