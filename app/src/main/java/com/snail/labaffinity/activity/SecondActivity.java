@@ -41,9 +41,14 @@ public class SecondActivity extends BaseActivity {
     void OnNeverAsk() {
 
     }
+
     @OnShowRationale(value = {"first", "second"})
     void OnShowRationale() {
 
     }
 
+    @OnShowRationale(value = {"first" })
+    void OnShowRationale1() {
+
+    }
 }

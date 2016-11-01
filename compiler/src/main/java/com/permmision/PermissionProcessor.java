@@ -62,6 +62,7 @@ public class PermissionProcessor extends AbstractProcessor {
             TypeSpec.Builder builder = TypeSpec.classBuilder(element.getSimpleName() + "$Listener")
                     .addSuperinterface(ParameterizedTypeName.get(ClassName.bestGuess(OnGrantedListener.class.getTypeName()), ClassName.bestGuess(element.getSimpleName().toString())))
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+                    .addField(Arrays.class,"mArrays")
                     .addField(String[].class, "mPermissions");
 
             MethodSpec.Builder grantedMethodSpecBuilder = MethodSpec.methodBuilder("onGranted")
