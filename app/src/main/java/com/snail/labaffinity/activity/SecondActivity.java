@@ -47,8 +47,13 @@ public class SecondActivity extends BaseActivity {
 
     }
 
-    @OnShowRationale(value = {"first" })
-    void OnShowRationale1() {
-
-    }
+//    @OnShowRationale(value = {"first"})
+//    void OnShowRationale1() {
+//
+//    }
+//
+//    @OnDenied(value = {"first"})
+//    void onDenied1() {
+//
+//    }
 }

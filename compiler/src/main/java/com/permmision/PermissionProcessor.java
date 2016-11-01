@@ -62,8 +62,7 @@ public class PermissionProcessor extends AbstractProcessor {
             TypeSpec.Builder builder = TypeSpec.classBuilder(element.getSimpleName() + "$Listener")
                     .addSuperinterface(ParameterizedTypeName.get(ClassName.bestGuess(OnGrantedListener.class.getTypeName()), ClassName.bestGuess(element.getSimpleName().toString())))
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-                    .addField(Arrays.class,"mArrays")
-                    .addField(String[].class, "mPermissions");
+                    .addField(Arrays.class, "mArrays");
 
             MethodSpec.Builder grantedMethodSpecBuilder = MethodSpec.methodBuilder("onGranted")
                     .addModifiers(Modifier.PUBLIC)
@@ -110,8 +109,7 @@ public class PermissionProcessor extends AbstractProcessor {
                     }
                     stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
                     stringBuilder.append("}");
-                    grantedMethodSpecBuilder.addStatement(String.format("mPermissions=new String[] %s", stringBuilder.toString()));
-                    grantedMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,mPermissions)) \nactivity.%s() ", item.getSimpleName().toString()));
+                    grantedMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)) \nactivity.%s() ", stringBuilder.toString(), item.getSimpleName().toString()));
                 } else if (onDenied != null) {
                     String[] params = onDenied.value();
                     StringBuilder stringBuilder = new StringBuilder();
@@ -124,8 +122,7 @@ public class PermissionProcessor extends AbstractProcessor {
                     }
                     stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
                     stringBuilder.append("}");
-                    denyMethodSpecBuilder.addStatement(String.format("mPermissions=new String[] %s", stringBuilder.toString()));
-                    denyMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,mPermissions)) \nactivity.%s() ", item.getSimpleName().toString()));
+                    denyMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)) \nactivity.%s() ", stringBuilder.toString(), item.getSimpleName().toString()));
                 } else if (onNeverAsk != null) {
                     String[] params = onNeverAsk.value();
                     StringBuilder stringBuilder = new StringBuilder();
@@ -138,8 +135,7 @@ public class PermissionProcessor extends AbstractProcessor {
                     }
                     stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
                     stringBuilder.append("}");
-                    neverAskMethodSpecBuilder.addStatement(String.format("mPermissions=new String[] %s", stringBuilder.toString()));
-                    neverAskMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,mPermissions)) \nactivity.%s() ", item.getSimpleName().toString()));
+                    neverAskMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)) \nactivity.%s() ", stringBuilder.toString(), item.getSimpleName().toString()));
                 } else if (onShowRationale != null) {
                     String[] params = onShowRationale.value();
                     StringBuilder stringBuilder = new StringBuilder();
@@ -152,11 +148,8 @@ public class PermissionProcessor extends AbstractProcessor {
                     }
                     stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
                     stringBuilder.append("}");
-                    showRationaleMethodSpecBuilder.addStatement(String.format("mPermissions=new String[] %s", stringBuilder.toString()));
-                    showRationaleMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,mPermissions)) \nactivity.%s() ", item.getSimpleName().toString()));
+                    showRationaleMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)) \nactivity.%s() ", stringBuilder.toString(), item.getSimpleName().toString()));
                 }
-
-
             }
             builder.addMethod(grantedMethodSpecBuilder.build());
             builder.addMethod(neverAskMethodSpecBuilder.build());
@@ -183,20 +176,48 @@ public class PermissionProcessor extends AbstractProcessor {
         elementUtils = env.getElementUtils();
     }
 
+    private String[] getValues(Element item) {
+
+        OnGranted tmpOnGranted = item.getAnnotation(OnGranted.class);
+        if (tmpOnGranted != null) {
+            return tmpOnGranted.value();
+        }
+        OnDenied tmpOnDenied = item.getAnnotation(OnDenied.class);
+        if (tmpOnDenied != null) {
+            return tmpOnDenied.value();
+        }
+        OnNeverAsk tmpNeverAsk = item.getAnnotation(OnNeverAsk.class);
+        if (tmpNeverAsk != null) {
+            return tmpNeverAsk.value();
+        }
+        OnShowRationale tmpShowRationale = item.getAnnotation(OnShowRationale.class);
+        if (tmpShowRationale != null) {
+            return tmpShowRationale.value();
+        }
+        return null;
+    }
+
     private boolean checkIntegrity(RoundEnvironment roundEnv) {
+
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(ActivityPermission.class);
 
         for (Element element : elements) {
             TypeElement typeElement = (TypeElement) element;
             List<? extends Element> members = elementUtils.getAllMembers(typeElement);
             for (Element item : members) {
-                OnGranted grantedAnnotation = item.getAnnotation(OnGranted.class);
-                if (grantedAnnotation != null) {
-                    String[] params = grantedAnnotation.value();
+                String[] params = getValues(item);
+                if (params != null) {
                     Element deny = null;
                     Element neverAsk = null;
                     Element showRationale = null;
+                    Element granted = null;
                     for (Element other : members) {
+
+                        OnGranted tmpOnGranted = other.getAnnotation(OnGranted.class);
+                        if (tmpOnGranted != null && Arrays.equals(tmpOnGranted.value(), params)) {
+                            granted = other;
+                            continue;
+                        }
                         OnDenied tmpOnDenied = other.getAnnotation(OnDenied.class);
                         if (tmpOnDenied != null && Arrays.equals(tmpOnDenied.value(), params)) {
                             deny = other;
@@ -204,27 +225,29 @@ public class PermissionProcessor extends AbstractProcessor {
                         }
                         OnNeverAsk tmpNeverAsk = other.getAnnotation(OnNeverAsk.class);
                         if (tmpNeverAsk != null && Arrays.equals(tmpNeverAsk.value(), params)) {
-                            neverAsk = item;
+                            neverAsk = other;
                             continue;
                         }
                         OnShowRationale tmpShowRationale = other.getAnnotation(OnShowRationale.class);
                         if (tmpShowRationale != null && Arrays.equals(tmpShowRationale.value(), params)) {
-                            showRationale = item;
+                            showRationale = other;
                         }
                     }
 
+                    if (granted == null) {
+                        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "need OnGranted func  " + Arrays.toString(params), element);
+                        return false;
+                    }
                     if (deny == null) {
-                        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "need OnDenied func ", element);
+                        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "need OnDenied func " + Arrays.toString(params), element);
                         return false;
                     }
-
                     if (neverAsk == null) {
-                        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "need OnNeverAsk func ", element);
+                        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "need OnNeverAsk func " + Arrays.toString(params), element);
                         return false;
                     }
-
                     if (showRationale == null) {
-                        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "need OnShowRationale func ", element);
+                        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "need OnShowRationale func " + Arrays.toString(params), element);
                         return false;
                     }
                 }
