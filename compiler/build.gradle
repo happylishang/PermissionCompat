@@ -13,16 +13,15 @@ dependencies {
     compile project(':annotation')
 }
 
-
 group = "snail"
+version = "0.0.1"
 install {
     repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
         pom {
             project {
-                packaging 'aar'
+                packaging 'jar'
                 // Add your description here
-                name 'Android Permissioncompat'     //项目的描述 你可以多写一点
+                name 'Android Permissioncompat Compiler'     //项目的描述 你可以多写一点
                 licenses {
                     license {
                         name 'The Apache Software License, Version 2.0'
@@ -67,7 +66,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "PermissionCompat"    //发布到JCenter上的项目名字
+        name = "permission-compiler"    //发布到JCenter上的项目名字
         licenses = ["Apache-2.0"]
         userOrg = "happysnail2956"
         publish = true

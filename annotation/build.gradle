@@ -1,8 +1,72 @@
 apply plugin: 'java'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+
+group = "snail"
+version = "0.0.1"
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'jar'
+                // Add your description here
+                name 'Android Permissioncompat Annotation'     //项目的描述 你可以多写一点
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'snail'        //填写的一些基本信息
+                        name 'snail'
+                        email 'happylishang2956@gmail.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    configurations = ['archives']
+    pkg {
+        repo = "maven"
+        name = "permission-annotation"
+        licenses = ["Apache-2.0"]
+        userOrg = "happysnail2956"
+        publish = true
+
+    }
 }
