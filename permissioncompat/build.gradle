@@ -2,9 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "0.0.1"
-
-
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
@@ -31,7 +28,7 @@ dependencies {
 }
 
 group = "snail"
-
+version = "0.0.1"
 install {
     repositories.mavenInstaller {
         // This generates POM.xml with proper parameters
