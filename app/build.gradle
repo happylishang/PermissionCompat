@@ -31,8 +31,9 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.github.campusappcn.AndRouter:router:1.2.4'
     compile 'com.jakewharton:butterknife:8.0.1'
+    compile project(':permissioncompat')
+
     apt 'com.github.campusappcn.AndRouter:compiler:1.2.4'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
-    compile project(':permissioncompat')
     apt project(':compiler')
 }
