@@ -33,7 +33,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
         Intent intent = new Intent(MainActivity.this, BackGroundService.class);
         startService(intent);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

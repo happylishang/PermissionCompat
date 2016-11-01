@@ -16,52 +16,51 @@ import java.util.Map;
  */
 public class PermissionCompat {
 
-
-    static void checkPermmisons(BasePermissionCompatActivity target, String[] permissons) {
-        if (PermissionUtils.hasSelfPermissions(target, permissons)) {
-        } else {
-            if (PermissionUtils.shouldShowRequestPermissionRationale(target, permissons)) {
-            } else {
-            }
-        }
-    }
-
     private static int sNextRequestCode;
-    static final Map<Class<?>, OnGrantedListener<? extends BasePermissionCompatActivity>> BINDERS = new LinkedHashMap<>();
+    static final Map<Class<?>, OnGrantedListener<BasePermissionCompatActivity>> BINDERS = new LinkedHashMap<>();
 
     // 分批次请求权限
-    static void requestPermission(BasePermissionCompatActivity target, String[] permissions) {
+    public static void requestPermission(BasePermissionCompatActivity target, String[] permissions) {
+
         Class<?> targetClass = target.getClass();
         try {
-            int requestCode = getNextRequestCode();
-            OnGrantedListener<? extends BasePermissionCompatActivity> listener = findOnGrantedListenerForClass(targetClass, permissions);
-            startRequest(target, listener, permissions);
+            OnGrantedListener<BasePermissionCompatActivity> listener = findOnGrantedListenerForClass(targetClass, permissions);
+            if (PermissionUtils.hasSelfPermissions(target, permissions)) {
+                listener.onGranted(target, permissions);
+            } else if (PermissionUtils.shouldShowRequestPermissionRationale(target, permissions)) {
+                // 拒绝过，再次请求的时候,这个函数是否有必要，不在询问后，返回false，第一次返回false，
+                //listener.onShowRationale(target, permissions);
+                startRequest(target, listener, permissions);
+            } else {
+                startRequest(target, listener, permissions);
+            }
+
         } catch (Exception e) {
             throw new RuntimeException("Unable to bind views for " + targetClass.getName(), e);
         }
     }
 
-    private static OnGrantedListener<? extends BasePermissionCompatActivity> findOnGrantedListenerForClass(Class<?> cls, String[] permissions)
+    private static OnGrantedListener<BasePermissionCompatActivity>
+    findOnGrantedListenerForClass(Class<?> cls, String[] permissions)
             throws IllegalAccessException, InstantiationException {
-        OnGrantedListener<? extends BasePermissionCompatActivity> viewBinder = BINDERS.get(cls);
-        if (viewBinder != null) {
-            return viewBinder;
+        OnGrantedListener<BasePermissionCompatActivity> listener = BINDERS.get(cls);
+        if (listener != null) {
+            return listener;
         }
         String clsName = cls.getName();
         try {
-            Class<?> listenerClass = Class.forName(clsName + "$$OnGrantedListener");
-            viewBinder = (OnGrantedListener<? extends BasePermissionCompatActivity>) listenerClass.newInstance();
+            Class<?> listenerClass = Class.forName(clsName + "$OnGrantedListener");
+            listener = (OnGrantedListener<BasePermissionCompatActivity>) listenerClass.newInstance();
         } catch (ClassNotFoundException e) {
-            viewBinder = findOnGrantedListenerForClass(cls.getSuperclass(), permissions);
+            listener = findOnGrantedListenerForClass(cls.getSuperclass(), permissions);
         }
-        BINDERS.put(cls, viewBinder);
-        return viewBinder;
+        BINDERS.put(cls, listener);
+        return listener;
     }
 
     private static void startRequest(BasePermissionCompatActivity target, OnGrantedListener listener, final @NonNull String[] permissions) {
-        int requestCode = getNextRequestCode();
         target.setOnGrantedListener(listener);
-        ActivityCompat.requestPermissions(target, permissions, getNextRequestCode());
+        ActivityCompat.requestPermissions(target, permissions, 100);
     }
 
     private static int getNextRequestCode() {

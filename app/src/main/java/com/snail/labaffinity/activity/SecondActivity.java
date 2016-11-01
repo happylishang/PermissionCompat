@@ -1,5 +1,6 @@
 package com.snail.labaffinity.activity;
 
+import android.Manifest;
 import android.os.Bundle;
 
 import com.annotation.annotation.ActivityPermission;
@@ -8,8 +9,11 @@ import com.annotation.annotation.OnGranted;
 import com.annotation.annotation.OnNeverAsk;
 import com.annotation.annotation.OnShowRationale;
 import com.snail.labaffinity.R;
+import com.snail.labaffinity.utils.LogUtils;
 
+import butterknife.OnClick;
 import cn.campusapp.router.annotation.RouterMap;
+import snail.permissioncompat.PermissionCompat;
 
 /**
  * Author: hzlishang
@@ -24,36 +28,31 @@ public class SecondActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.second);
     }
 
-    @OnGranted(value = {"first", "second"})
+    @OnGranted(value = {Manifest.permission.CAMERA})
     void granted() {
-
+        LogUtils.v("granted");
     }
 
-    @OnDenied(value = {"first", "second"})
+    @OnDenied(value = {Manifest.permission.CAMERA})
     void onDenied() {
-
+        LogUtils.v("onDenied");
     }
 
-    @OnNeverAsk(value = {"first", "second"})
+    @OnNeverAsk(value = {Manifest.permission.CAMERA})
     void OnNeverAsk() {
-
+        LogUtils.v("OnNeverAsk");
     }
 
-    @OnShowRationale(value = {"first", "second"})
+    @OnShowRationale(value = {Manifest.permission.CAMERA})
     void OnShowRationale() {
-
+        LogUtils.v("OnShowRationale");
     }
 
-//    @OnShowRationale(value = {"first"})
-//    void OnShowRationale1() {
-//
-//    }
-//
-//    @OnDenied(value = {"first"})
-//    void onDenied1() {
-//
-//    }
+    @OnClick(R.id.get)
+    void get() {
+        PermissionCompat.requestPermission(this, new String[]{Manifest.permission.CAMERA});
+    }
 }

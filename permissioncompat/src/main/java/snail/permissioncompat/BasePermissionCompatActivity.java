@@ -20,8 +20,21 @@ public class BasePermissionCompatActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         if (mOnGrantedListener != null) {
-            mOnGrantedListener.onDenied(this, permissions);
+            if (PermissionUtils.getTargetSdkVersion(this) < 23 && !PermissionUtils.hasSelfPermissions(this, permissions)) {
+                mOnGrantedListener.onGranted(this, permissions);
+                return;
+            }
+            if (PermissionUtils.verifyPermissions(grantResults)) {
+                mOnGrantedListener.onGranted(this, permissions);
+            } else {
+                if (!PermissionUtils.shouldShowRequestPermissionRationale(this, permissions)) {
+                    mOnGrantedListener.onNeverAsk(this, permissions);
+                } else {
+                    mOnGrantedListener.onDenied(this, permissions);
+                }
+            }
         }
     }
 
@@ -39,5 +52,12 @@ public class BasePermissionCompatActivity extends AppCompatActivity {
 
     public void setOnGrantedListener(OnGrantedListener onGrantedListener) {
         mOnGrantedListener = onGrantedListener;
+    }
+
+    public void jumpToSettingForPermissions() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivityForResult(intent, 1000);
     }
 }

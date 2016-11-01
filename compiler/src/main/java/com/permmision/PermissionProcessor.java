@@ -59,7 +59,7 @@ public class PermissionProcessor extends AbstractProcessor {
             TypeElement typeElement = (TypeElement) element;
             List<? extends Element> members = elementUtils.getAllMembers(typeElement);
 
-            TypeSpec.Builder builder = TypeSpec.classBuilder(element.getSimpleName() + "$Listener")
+            TypeSpec.Builder builder = TypeSpec.classBuilder(element.getSimpleName() + "$OnGrantedListener")
                     .addSuperinterface(ParameterizedTypeName.get(ClassName.bestGuess(OnGrantedListener.class.getTypeName()), ClassName.bestGuess(element.getSimpleName().toString())))
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                     .addField(Arrays.class, "mArrays");
@@ -197,6 +197,9 @@ public class PermissionProcessor extends AbstractProcessor {
         return null;
     }
 
+    /**
+     * 安全性检查，是否配套使用了，四个函数必须完整
+     */
     private boolean checkIntegrity(RoundEnvironment roundEnv) {
 
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(ActivityPermission.class);
