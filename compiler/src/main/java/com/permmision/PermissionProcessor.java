@@ -1,12 +1,12 @@
 package com.permmision;
 
 
-import com.annotation.annotation.ActivityPermission;
-import com.annotation.annotation.OnDenied;
-import com.annotation.annotation.OnGranted;
-import com.annotation.annotation.OnGrantedListener;
-import com.annotation.annotation.OnNeverAsk;
-import com.annotation.annotation.OnShowRationale;
+import com.annotation.ActivityPermission;
+import com.annotation.OnDenied;
+import com.annotation.OnGranted;
+import com.annotation.OnGrantedListener;
+import com.annotation.OnNeverAsk;
+import com.annotation.OnShowRationale;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;

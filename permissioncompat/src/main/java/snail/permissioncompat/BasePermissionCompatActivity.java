@@ -6,7 +6,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
-import com.annotation.annotation.OnGrantedListener;
+import com.annotation.OnGrantedListener;
 
 /**
  * Author: hzlishang

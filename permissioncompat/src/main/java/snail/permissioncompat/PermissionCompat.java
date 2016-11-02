@@ -3,7 +3,7 @@ package snail.permissioncompat;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
-import com.annotation.annotation.OnGrantedListener;
+import com.annotation.OnGrantedListener;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

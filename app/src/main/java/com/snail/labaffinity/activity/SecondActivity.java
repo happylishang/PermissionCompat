@@ -3,11 +3,11 @@ package com.snail.labaffinity.activity;
 import android.Manifest;
 import android.os.Bundle;
 
-import com.annotation.annotation.ActivityPermission;
-import com.annotation.annotation.OnDenied;
-import com.annotation.annotation.OnGranted;
-import com.annotation.annotation.OnNeverAsk;
-import com.annotation.annotation.OnShowRationale;
+import com.annotation.ActivityPermission;
+import com.annotation.OnDenied;
+import com.annotation.OnGranted;
+import com.annotation.OnNeverAsk;
+import com.annotation.OnShowRationale;
 import com.snail.labaffinity.R;
 import com.snail.labaffinity.utils.LogUtils;
 

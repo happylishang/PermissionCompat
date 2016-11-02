@@ -1,4 +1,4 @@
-package com.annotation.annotation;
+package com.annotation;
 
 /**
  * Author: hzlishang
