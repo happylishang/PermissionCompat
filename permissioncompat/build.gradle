@@ -24,11 +24,12 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile "com.android.support:appcompat-v7:${APPCOMPAT_V7_VERSION}"
+//    compile 'snail:annotation:0.0.2'
     compile project(':annotation')
 }
 
 group = "snail"
-version = "0.0.1"
+version = "0.0.2"
 install {
     repositories.mavenInstaller {
         // This generates POM.xml with proper parameters
@@ -78,7 +79,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "PermissionCompat"    //发布到JCenter上的项目名字
+        name = "permission-compat"    //发布到JCenter上的项目名字
         licenses = ["Apache-2.0"]
         userOrg="happysnail2956"
         publish = true
