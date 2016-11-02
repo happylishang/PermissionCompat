@@ -20,7 +20,15 @@ allprojects {
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
-
+        maven {
+            url "http://happysnail2956.bintray.com/maven"
+            credentials {
+                Properties properties = new Properties()
+                properties.load(project.rootProject.file('local.properties').newDataInputStream())
+                username properties.getProperty("bintray.user")
+                password properties.getProperty("bintray.apikey")
+            }
+        }
     }
 }
 

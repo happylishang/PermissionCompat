@@ -24,8 +24,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile "com.android.support:appcompat-v7:${APPCOMPAT_V7_VERSION}"
-//    compile 'snail:annotation:0.0.2'
-    compile project(':annotation')
+    compile 'snail:annotation:0.0.3'
 }
 
 group = "snail"

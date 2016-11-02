@@ -6,32 +6,14 @@ apply plugin: 'com.jfrog.bintray'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-
-repositories {
-    maven {
-        url "http://happysnail2956.bintray.com/maven"
-        credentials {
-            Properties properties = new Properties()
-            properties.load(project.rootProject.file('local.properties').newDataInputStream())
-            username properties.getProperty("bintray.user")
-            password properties.getProperty("bintray.apikey")
-        }
-    }
-}
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.squareup:javapoet:1.6.1'
     compile 'com.google.auto.service:auto-service:1.0-rc2'
-//    compile 'snail:annotation:0.0.2'
-//    compile project(':annotation')
     compile 'snail:annotation:0.0.3'
 
 }
 
-
-group = "snail"
-version = "0.0.2"
 install {
     repositories.mavenInstaller {
         pom {
@@ -90,3 +72,5 @@ bintray {
 
     }
 }
+group = "snail"
+version = "0.0.2"
