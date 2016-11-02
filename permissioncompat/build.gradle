@@ -28,7 +28,7 @@ dependencies {
 }
 
 group = "snail"
-version = "0.0.2"
+version = "0.0.3"
 install {
     repositories.mavenInstaller {
         // This generates POM.xml with proper parameters
