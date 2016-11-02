@@ -67,10 +67,10 @@ bintray {
         repo = "maven"
         name = "permission-compiler"    //发布到JCenter上的项目名字
         licenses = ["Apache-2.0"]
-        userOrg = "happysnail2956"
+        userOrg = "happysnail"
         publish = true
-
+        vcsUrl = GIT_URL
     }
 }
-group = "snail"
-version = "0.0.3"
+group = GROUP
+version = VERSION_NAME

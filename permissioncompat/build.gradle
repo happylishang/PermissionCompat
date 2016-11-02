@@ -27,8 +27,7 @@ dependencies {
     compile 'snail:annotation:0.0.3'
 }
 
-group = "snail"
-version = "0.0.3"
+
 install {
     repositories.mavenInstaller {
         // This generates POM.xml with proper parameters
@@ -80,8 +79,11 @@ bintray {
         repo = "maven"
         name = "permission-compat"    //发布到JCenter上的项目名字
         licenses = ["Apache-2.0"]
-        userOrg="happysnail2956"
+        userOrg="happysnail"
         publish = true
-
+        vcsUrl = GIT_URL
     }
 }
+
+group = GROUP
+version = VERSION_NAME
