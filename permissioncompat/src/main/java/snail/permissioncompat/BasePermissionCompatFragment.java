@@ -14,12 +14,12 @@ import com.annotation.OnGrantedListener;
  * Des:
  * version:
  */
-public abstract class BasePermissionCompatActivity extends AppCompatActivity {
+public abstract class BasePermissionCompatFragment extends AppCompatActivity {
 
 
-    private OnGrantedListener<BasePermissionCompatActivity> mOnGrantedListener;
+    private OnGrantedListener<BasePermissionCompatFragment> mOnGrantedListener;
 
-    public void setOnGrantedListener(OnGrantedListener<BasePermissionCompatActivity> onGrantedListener) {
+    public void setOnGrantedListener(OnGrantedListener<BasePermissionCompatFragment> onGrantedListener) {
         mOnGrantedListener = onGrantedListener;
     }
 

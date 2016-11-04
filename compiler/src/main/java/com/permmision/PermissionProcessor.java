@@ -2,6 +2,7 @@ package com.permmision;
 
 
 import com.annotation.ActivityPermission;
+import com.annotation.FragmentPermission;
 import com.annotation.OnDenied;
 import com.annotation.OnGranted;
 import com.annotation.OnGrantedListener;
@@ -47,14 +48,25 @@ public class PermissionProcessor extends AbstractProcessor {
         return annotations;
     }
 
+    @Override
+    public synchronized void init(ProcessingEnvironment env) {
+        super.init(env);
+        elementUtils = env.getElementUtils();
+    }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(ActivityPermission.class);
-
         if (!checkIntegrity(roundEnv))
             return false;
+        Set<? extends Element> elementActivities = roundEnv.getElementsAnnotatedWith(ActivityPermission.class);
+        Set<? extends Element> elementFragments = roundEnv.getElementsAnnotatedWith(ActivityPermission.class);
+        return makeListenerJavaFile(elementActivities) && makeListenerJavaFile(elementFragments);
+    }
 
+    /**
+     * 动态构建Java类
+     */
+    private boolean makeListenerJavaFile(Set<? extends Element> elements) {
         for (Element element : elements) {
             TypeElement typeElement = (TypeElement) element;
             List<? extends Element> members = elementUtils.getAllMembers(typeElement);
@@ -167,16 +179,8 @@ public class PermissionProcessor extends AbstractProcessor {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
         return true;
-    }
-
-
-    @Override
-    public synchronized void init(ProcessingEnvironment env) {
-        super.init(env);
-        elementUtils = env.getElementUtils();
     }
 
     private String[] getValues(Element item) {
@@ -201,11 +205,19 @@ public class PermissionProcessor extends AbstractProcessor {
     }
 
     /**
-     * 安全性检查，是否配套使用了，四个函数必须完整
+     * 安全性检查，ActivityPermission与FragmentPermission声明的类，四个函数必须完整
      */
     private boolean checkIntegrity(RoundEnvironment roundEnv) {
 
-        Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(ActivityPermission.class);
+        Set<? extends Element> elementActivities = roundEnv.getElementsAnnotatedWith(ActivityPermission.class);
+        Set<? extends Element> elementFragments = roundEnv.getElementsAnnotatedWith(FragmentPermission.class);
+        return matchCallBacks(elementActivities) && matchCallBacks(elementFragments);
+    }
+
+    /**
+     * 四个函数必须完整
+     */
+    private boolean matchCallBacks(Set<? extends Element> elements) {
 
         for (Element element : elements) {
             TypeElement typeElement = (TypeElement) element;
