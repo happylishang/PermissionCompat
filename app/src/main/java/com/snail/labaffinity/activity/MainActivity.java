@@ -13,7 +13,6 @@ import com.snail.labaffinity.service.BackGroundService;
 import com.snail.labaffinity.utils.ToastUtil;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.campusapp.router.Router;
 import cn.campusapp.router.route.ActivityRoute;

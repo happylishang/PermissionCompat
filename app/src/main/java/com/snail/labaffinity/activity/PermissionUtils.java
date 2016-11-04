@@ -1,4 +1,4 @@
-package snail.permissioncompat;
+package com.snail.labaffinity.activity;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

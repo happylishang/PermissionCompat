@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import com.snail.labaffinity.R;
 
 import butterknife.ButterKnife;
-import snail.permissioncompat.BasePermissionCompatActivity;
 
 /**
  * Author: hzlishang

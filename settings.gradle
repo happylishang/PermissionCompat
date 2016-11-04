@@ -1,1 +1,1 @@
-include ':app', ':compiler', ':permissioncompat', ':annotation'
+include ':app',  ':annotation'
