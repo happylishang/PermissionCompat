@@ -40,8 +40,7 @@ public class PermissionCompat {
         }
     }
 
-    private static OnGrantedListener<BasePermissionCompatActivity>
-    findOnGrantedListenerForClass(Class<?> cls, String[] permissions)
+    private static OnGrantedListener<BasePermissionCompatActivity> findOnGrantedListenerForClass(Class<?> cls, String[] permissions)
             throws IllegalAccessException, InstantiationException {
         OnGrantedListener<BasePermissionCompatActivity> listener = BINDERS.get(cls);
         if (listener != null) {
@@ -60,7 +59,7 @@ public class PermissionCompat {
 
     private static void startRequest(BasePermissionCompatActivity target, OnGrantedListener listener, final @NonNull String[] permissions) {
         target.setOnGrantedListener(listener);
-        ActivityCompat.requestPermissions(target, permissions, 100);
+        ActivityCompat.requestPermissions(target, permissions, getNextRequestCode());
     }
 
     private static int getNextRequestCode() {

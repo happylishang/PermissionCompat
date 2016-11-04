@@ -109,8 +109,7 @@ public class PermissionProcessor extends AbstractProcessor {
                     }
                     stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
                     stringBuilder.append("}");
-                    grantedMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)){ \nactivity.%s() ; \nreturn ;}", stringBuilder.toString(), item.getSimpleName().toString()));
-//                    grantedMethodSpecBuilder.addStatement("return");
+                    grantedMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)){ \nactivity.%s() ; \nreturn ;\n}", stringBuilder.toString(), item.getSimpleName().toString()));
                 } else if (onDenied != null) {
                     String[] params = onDenied.value();
                     StringBuilder stringBuilder = new StringBuilder();
@@ -123,8 +122,7 @@ public class PermissionProcessor extends AbstractProcessor {
                     }
                     stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
                     stringBuilder.append("}");
-                    denyMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)) {\nactivity.%s() ;\n return ;} ", stringBuilder.toString(), item.getSimpleName().toString()));
-//                    denyMethodSpecBuilder.addStatement("return");
+                    denyMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)) {\nactivity.%s() ;\n return ;\n} ", stringBuilder.toString(), item.getSimpleName().toString()));
                 } else if (onNeverAsk != null) {
                     String[] params = onNeverAsk.value();
                     StringBuilder stringBuilder = new StringBuilder();
@@ -137,8 +135,7 @@ public class PermissionProcessor extends AbstractProcessor {
                     }
                     stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
                     stringBuilder.append("}");
-                    neverAskMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)) {\nactivity.%s() ;\nreturn ;} ", stringBuilder.toString(), item.getSimpleName().toString()));
-//                    neverAskMethodSpecBuilder.addStatement("return");
+                    neverAskMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)) {\nactivity.%s() ;\n return ; \n} ", stringBuilder.toString(), item.getSimpleName().toString()));
                 } else if (onShowRationale != null) {
                     String[] params = onShowRationale.value();
                     StringBuilder stringBuilder = new StringBuilder();
@@ -151,17 +148,16 @@ public class PermissionProcessor extends AbstractProcessor {
                     }
                     stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
                     stringBuilder.append("}");
-                    showRationaleMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)) {\nactivity.%s() ;\nreturn;} ", stringBuilder.toString(), item.getSimpleName().toString()));
-//                    showRationaleMethodSpecBuilder.addStatement("return");
+                    showRationaleMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)) {\nactivity.%s() ;\nreturn;\n} ", stringBuilder.toString(), item.getSimpleName().toString()));
                 }
             }
-            grantedMethodSpecBuilder.addStatement("throw new RuntimeException(\"Unable to bind views for permissions \")");
+            grantedMethodSpecBuilder.addStatement("throw new RuntimeException(String.format(\"Unable to find callbacks for permissions %s\",Arrays.toString(permissions)))");
             builder.addMethod(grantedMethodSpecBuilder.build());
-            neverAskMethodSpecBuilder.addStatement("throw new RuntimeException(\"Unable to bind views for permissions \")");
+            neverAskMethodSpecBuilder.addStatement("throw new RuntimeException(String.format(\"Unable to find callbacks for permissions %s\",Arrays.toString(permissions)))");
             builder.addMethod(neverAskMethodSpecBuilder.build());
-            showRationaleMethodSpecBuilder.addStatement("throw new RuntimeException(\"Unable to bind views for permissions \")");
+            showRationaleMethodSpecBuilder.addStatement("throw new RuntimeException(String.format(\"Unable to find callbacks for permissions %s\",Arrays.toString(permissions)))");
             builder.addMethod(showRationaleMethodSpecBuilder.build());
-            denyMethodSpecBuilder.addStatement("throw new RuntimeException(\"Unable to bind views for permissions \")");
+            denyMethodSpecBuilder.addStatement("throw new RuntimeException(String.format(\"Unable to find callbacks for permissions %s\",Arrays.toString(permissions)))");
             builder.addMethod(denyMethodSpecBuilder.build());
             TypeSpec typeSpec = builder.build();
             JavaFile javaFile = JavaFile.builder(getPackageName(typeElement), typeSpec)
