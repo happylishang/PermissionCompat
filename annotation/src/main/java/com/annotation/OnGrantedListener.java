@@ -6,7 +6,7 @@ package com.annotation;
  * Des:分组、单个
  * version:
  */
-public interface OnGrantedListener<T> {
+public interface OnGrantedListener<T > {
 
     void onGranted(T target,String[] permissions);
 

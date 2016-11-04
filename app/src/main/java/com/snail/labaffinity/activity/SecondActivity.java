@@ -1,20 +1,17 @@
 package com.snail.labaffinity.activity;
 
 import android.Manifest;
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.annotation.ActivityPermission;
-import com.annotation.OnDenied;
-import com.annotation.OnGranted;
-import com.annotation.OnNeverAsk;
-import com.annotation.OnShowRationale;
+import com.annotation.OnGrantedListener;
 import com.snail.labaffinity.R;
 import com.snail.labaffinity.utils.ToastUtil;
 
+import java.util.Arrays;
+
 import butterknife.OnClick;
 import cn.campusapp.router.annotation.RouterMap;
-import snail.permissioncompat.PermissionCompat;
 
 /**
  * Author: hzlishang
@@ -24,7 +21,7 @@ import snail.permissioncompat.PermissionCompat;
  */
 @ActivityPermission
 @RouterMap({"activity://second"})
-public class SecondActivity extends BaseActivity {
+public class SecondActivity extends BaseActivity implements OnGrantedListener<SecondActivity> {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,95 +29,39 @@ public class SecondActivity extends BaseActivity {
         setContentView(R.layout.second);
     }
 
-    @OnGranted(value = {Manifest.permission.CAMERA})
-    void grantedC() {
-        ToastUtil.show("CAMERA granted");
-    }
-
-    @OnDenied(value = {Manifest.permission.CAMERA})
-    void onDeniedC() {
-        ToastUtil.show(" CAMERA onDenied");
-    }
-
-    @OnNeverAsk(value = {Manifest.permission.CAMERA})
-    void OnNeverAskC() {
-        ToastUtil.show(" CAMERA OnNeverAsk");
-        starSettingActivityForPermission(1000);
-    }
-
-    @OnShowRationale(value = {Manifest.permission.CAMERA})
-    void OnShowRationaleC() {
-        ToastUtil.show(" CAMERA OnShowRationale");
-    }
 
     @OnClick(R.id.camera)
     void camera() {
-        PermissionCompat.requestPermission(this, new String[]{Manifest.permission.CAMERA});
+        PermissionCompat.requestPermission(this, new String[]{Manifest.permission.CAMERA}, this);
     }
-
-    @OnGranted(value = {Manifest.permission.CALL_PHONE})
-    void grantedP() {
-        ToastUtil.show("Phone granted");
-    }
-
-    @OnDenied(value = {Manifest.permission.CALL_PHONE})
-    void onDeniedP() {
-        ToastUtil.show("Phone onDenied");
-    }
-
-    @OnNeverAsk(value = {Manifest.permission.CALL_PHONE})
-    void OnNeverAskP() {
-        ToastUtil.show("Phone OnNeverAsk");
-        starSettingActivityForPermission(1000);
-    }
-
-    @OnShowRationale(value = {Manifest.permission.CALL_PHONE})
-    void OnShowRationaleP() {
-        ToastUtil.show("Phone OnShowRationale");
-    }
-
 
     @OnClick(R.id.phone)
     void phone() {
-        PermissionCompat.requestPermission(this, new String[]{Manifest.permission.CALL_PHONE});
+        PermissionCompat.requestPermission(this, new String[]{Manifest.permission.CALL_PHONE}, this);
     }
 
+    // 根据permissions自行处理，可合并，可分开
+    @Override
+    public void onGranted(SecondActivity target, String[] permissions) {
 
-    @OnGranted(value = {Manifest.permission.CALL_PHONE, Manifest.permission.CAMERA})
-    void grantedPC() {
-        ToastUtil.show("Phone CAMERA  granted");
+        ToastUtil.show(Arrays.toString(permissions) + " onGranted");
     }
 
-    @OnDenied(value = {Manifest.permission.CALL_PHONE, Manifest.permission.CAMERA})
-    void onDeniedPC() {
-        ToastUtil.show("Phone CAMERA onDenied");
+    @Override
+    public void onDenied(SecondActivity target, String[] permissions) {
+
+        ToastUtil.show(Arrays.toString(permissions) + " onDenied");
     }
 
-    @OnNeverAsk(value = {Manifest.permission.CALL_PHONE, Manifest.permission.CAMERA})
-    void OnNeverAskPC() {
-        ToastUtil.show("Phone CAMERA  OnNeverAsk");
-        starSettingActivityForPermission(1000);
+    @Override
+    public void onNeverAsk(SecondActivity target, String[] permissions) {
+
+        ToastUtil.show(Arrays.toString(permissions) + " onNeverAsk");
     }
 
-    @OnShowRationale(value = {Manifest.permission.CALL_PHONE, Manifest.permission.CAMERA})
-    void OnShowRationalePC() {
-        ToastUtil.show("Phone CAMERA OnShowRationale");
-    }
+    @Override
+    public void onShowRationale(SecondActivity target, String[] permissions) {
 
-
-    @OnClick(R.id.phone_c)
-    void phoneCamera() {
-        PermissionCompat.requestPermission(this, new String[]{Manifest.permission.CALL_PHONE, Manifest.permission.CAMERA});
+        ToastUtil.show(Arrays.toString(permissions) + " onShowRationale");
     }
-
-    @OnClick(R.id.no_match)
-    void no_match() {
-        PermissionCompat.requestPermission(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.CAMERA});
-    }
-    @OnClick(R.id.fragment)
-    void fragment() {
-        Intent intent =new Intent(this,PFragmentActivity.class);
-        startActivity(intent);
-    }
-
 }

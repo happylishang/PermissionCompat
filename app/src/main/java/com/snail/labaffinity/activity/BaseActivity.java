@@ -21,7 +21,6 @@ public class BaseActivity extends BasePermissionCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
-
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
