@@ -87,28 +87,28 @@ public class SecondActivity extends BaseActivity {
 
     @OnGranted(value = {Manifest.permission.CALL_PHONE, Manifest.permission.CAMERA})
     void grantedPC() {
-        ToastUtil.show("Phone granted");
+        ToastUtil.show("Phone CAMERA  granted");
     }
 
     @OnDenied(value = {Manifest.permission.CALL_PHONE, Manifest.permission.CAMERA})
     void onDeniedPC() {
-        ToastUtil.show("Phone onDenied");
+        ToastUtil.show("Phone CAMERA onDenied");
     }
 
     @OnNeverAsk(value = {Manifest.permission.CALL_PHONE, Manifest.permission.CAMERA})
     void OnNeverAskPC() {
-        ToastUtil.show("Phone OnNeverAsk");
+        ToastUtil.show("Phone CAMERA  OnNeverAsk");
         starSettingActivityForPermission(1000);
     }
 
     @OnShowRationale(value = {Manifest.permission.CALL_PHONE, Manifest.permission.CAMERA})
     void OnShowRationalePC() {
-        ToastUtil.show("Phone OnShowRationale");
+        ToastUtil.show("Phone CAMERA OnShowRationale");
     }
 
 
     @OnClick(R.id.phone_c)
-    void phonecamera() {
+    void phoneCamera() {
         PermissionCompat.requestPermission(this, new String[]{Manifest.permission.CALL_PHONE, Manifest.permission.CAMERA});
     }
 
