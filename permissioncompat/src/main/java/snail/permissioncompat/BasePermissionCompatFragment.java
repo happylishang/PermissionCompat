@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 
 import com.annotation.OnGrantedListener;
 
@@ -14,7 +14,7 @@ import com.annotation.OnGrantedListener;
  * Des:
  * version:
  */
-public abstract class BasePermissionCompatFragment extends AppCompatActivity {
+public abstract class BasePermissionCompatFragment extends Fragment {
 
 
     private OnGrantedListener<BasePermissionCompatFragment> mOnGrantedListener;
@@ -27,15 +27,16 @@ public abstract class BasePermissionCompatFragment extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+
         if (mOnGrantedListener != null) {
-            if (PermissionUtils.getTargetSdkVersion(this) < 23 && !PermissionUtils.hasSelfPermissions(this, permissions)) {
+            if (PermissionUtils.getTargetSdkVersion(this.getActivity()) < 23 && !PermissionUtils.hasSelfPermissions(getActivity(), permissions)) {
                 mOnGrantedListener.onGranted(this, permissions);
                 return;
             }
             if (PermissionUtils.verifyPermissions(grantResults)) {
                 mOnGrantedListener.onGranted(this, permissions);
             } else {
-                if (!PermissionUtils.shouldShowRequestPermissionRationale(this, permissions)) {
+                if (!PermissionUtils.shouldShowRequestPermissionRationale(getActivity(), permissions)) {
                     mOnGrantedListener.onNeverAsk(this, permissions);
                 } else {
                     mOnGrantedListener.onDenied(this, permissions);
@@ -49,14 +50,9 @@ public abstract class BasePermissionCompatFragment extends AppCompatActivity {
      */
     public void starSettingActivityForPermission(int requestCode) {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
         intent.setData(uri);
         startActivityForResult(intent, requestCode);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mOnGrantedListener = null;
-    }
 }

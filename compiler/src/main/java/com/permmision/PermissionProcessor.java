@@ -59,7 +59,7 @@ public class PermissionProcessor extends AbstractProcessor {
         if (!checkIntegrity(roundEnv))
             return false;
         Set<? extends Element> elementActivities = roundEnv.getElementsAnnotatedWith(ActivityPermission.class);
-        Set<? extends Element> elementFragments = roundEnv.getElementsAnnotatedWith(ActivityPermission.class);
+        Set<? extends Element> elementFragments = roundEnv.getElementsAnnotatedWith(FragmentPermission.class);
         return makeListenerJavaFile(elementActivities) && makeListenerJavaFile(elementFragments);
     }
 
@@ -80,28 +80,28 @@ public class PermissionProcessor extends AbstractProcessor {
                     .addModifiers(Modifier.PUBLIC)
                     .addAnnotation(Override.class)
                     .returns(TypeName.VOID)
-                    .addParameter(ClassName.get(typeElement.asType()), "activity")
+                    .addParameter(ClassName.get(typeElement.asType()), "target")
                     .addParameter(String[].class, "permissions");
 
             MethodSpec.Builder denyMethodSpecBuilder = MethodSpec.methodBuilder("onDenied")
                     .addModifiers(Modifier.PUBLIC)
                     .addAnnotation(Override.class)
                     .returns(TypeName.VOID)
-                    .addParameter(ClassName.get(typeElement.asType()), "activity")
+                    .addParameter(ClassName.get(typeElement.asType()), "target")
                     .addParameter(String[].class, "permissions");
 
             MethodSpec.Builder neverAskMethodSpecBuilder = MethodSpec.methodBuilder("onNeverAsk")
                     .addModifiers(Modifier.PUBLIC)
                     .addAnnotation(Override.class)
                     .returns(TypeName.VOID)
-                    .addParameter(ClassName.get(typeElement.asType()), "activity")
+                    .addParameter(ClassName.get(typeElement.asType()), "target")
                     .addParameter(String[].class, "permissions");
 
             MethodSpec.Builder showRationaleMethodSpecBuilder = MethodSpec.methodBuilder("onShowRationale")
                     .addModifiers(Modifier.PUBLIC)
                     .addAnnotation(Override.class)
                     .returns(TypeName.VOID)
-                    .addParameter(ClassName.get(typeElement.asType()), "activity")
+                    .addParameter(ClassName.get(typeElement.asType()), "target")
                     .addParameter(String[].class, "permissions");
 
             for (Element item : members) {
@@ -121,7 +121,7 @@ public class PermissionProcessor extends AbstractProcessor {
                     }
                     stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
                     stringBuilder.append("}");
-                    grantedMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)){ \nactivity.%s() ; \nreturn ;\n}", stringBuilder.toString(), item.getSimpleName().toString()));
+                    grantedMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)){ \ntarget.%s() ; \nreturn ;\n}", stringBuilder.toString(), item.getSimpleName().toString()));
                 } else if (onDenied != null) {
                     String[] params = onDenied.value();
                     StringBuilder stringBuilder = new StringBuilder();
@@ -134,7 +134,7 @@ public class PermissionProcessor extends AbstractProcessor {
                     }
                     stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
                     stringBuilder.append("}");
-                    denyMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)) {\nactivity.%s() ;\n return ;\n} ", stringBuilder.toString(), item.getSimpleName().toString()));
+                    denyMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)) {\ntarget.%s() ;\n return ;\n} ", stringBuilder.toString(), item.getSimpleName().toString()));
                 } else if (onNeverAsk != null) {
                     String[] params = onNeverAsk.value();
                     StringBuilder stringBuilder = new StringBuilder();
@@ -147,7 +147,7 @@ public class PermissionProcessor extends AbstractProcessor {
                     }
                     stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
                     stringBuilder.append("}");
-                    neverAskMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)) {\nactivity.%s() ;\n return ; \n} ", stringBuilder.toString(), item.getSimpleName().toString()));
+                    neverAskMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)) {\ntarget.%s() ;\n return ; \n} ", stringBuilder.toString(), item.getSimpleName().toString()));
                 } else if (onShowRationale != null) {
                     String[] params = onShowRationale.value();
                     StringBuilder stringBuilder = new StringBuilder();
@@ -160,7 +160,7 @@ public class PermissionProcessor extends AbstractProcessor {
                     }
                     stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
                     stringBuilder.append("}");
-                    showRationaleMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)) {\nactivity.%s() ;\nreturn;\n} ", stringBuilder.toString(), item.getSimpleName().toString()));
+                    showRationaleMethodSpecBuilder.addStatement(String.format("if(Arrays.equals(permissions,new String[] %s)) {\ntarget.%s() ;\nreturn;\n} ", stringBuilder.toString(), item.getSimpleName().toString()));
                 }
             }
             grantedMethodSpecBuilder.addStatement("throw new RuntimeException(String.format(\"Unable to find callbacks for permissions %s\",Arrays.toString(permissions)))");

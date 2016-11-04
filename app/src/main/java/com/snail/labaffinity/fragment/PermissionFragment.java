@@ -1,10 +1,13 @@
-package com.snail.labaffinity.activity;
+package com.snail.labaffinity.fragment;
 
 import android.Manifest;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import com.annotation.ActivityPermission;
+import com.annotation.FragmentPermission;
 import com.annotation.OnDenied;
 import com.annotation.OnGranted;
 import com.annotation.OnNeverAsk;
@@ -12,24 +15,30 @@ import com.annotation.OnShowRationale;
 import com.snail.labaffinity.R;
 import com.snail.labaffinity.utils.ToastUtil;
 
+import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.campusapp.router.annotation.RouterMap;
+import snail.permissioncompat.BasePermissionCompatFragment;
 import snail.permissioncompat.PermissionCompat;
 
 /**
  * Author: hzlishang
- * Data: 16/10/12 上午9:56
+ * Data: 16/11/4 下午3:17
  * Des:
  * version:
  */
-@ActivityPermission
-@RouterMap({"activity://second"})
-public class SecondActivity extends BaseActivity {
+@FragmentPermission
+public class PermissionFragment extends BasePermissionCompatFragment {
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.second, container, false);
+    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.second);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this,view);
     }
 
     @OnGranted(value = {Manifest.permission.CAMERA})
@@ -117,10 +126,4 @@ public class SecondActivity extends BaseActivity {
     void no_match() {
         PermissionCompat.requestPermission(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.CAMERA});
     }
-    @OnClick(R.id.fragment)
-    void fragment() {
-        Intent intent =new Intent(this,PFragmentActivity.class);
-        startActivity(intent);
-    }
-
 }
