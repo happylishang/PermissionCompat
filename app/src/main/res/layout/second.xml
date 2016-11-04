@@ -5,8 +5,24 @@
               android:orientation="vertical">
 
     <Button
-        android:id="@+id/get"
+        android:id="@+id/camera"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="getPermison"/>
+        android:text=" CameraPermission"/>
+
+    <Button
+        android:id="@+id/phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" phonePermission"/>
+    <Button
+        android:id="@+id/phone_c"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" CameraAndPhonePermission"/>
+    <Button
+        android:id="@+id/no_match"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" Permission not match"/>
 </LinearLayout>

@@ -9,7 +9,7 @@ import com.annotation.OnGranted;
 import com.annotation.OnNeverAsk;
 import com.annotation.OnShowRationale;
 import com.snail.labaffinity.R;
-import com.snail.labaffinity.utils.LogUtils;
+import com.snail.labaffinity.utils.ToastUtil;
 
 import butterknife.OnClick;
 import cn.campusapp.router.annotation.RouterMap;
@@ -32,28 +32,88 @@ public class SecondActivity extends BaseActivity {
     }
 
     @OnGranted(value = {Manifest.permission.CAMERA})
-    void granted() {
-        LogUtils.v("granted");
+    void grantedC() {
+        ToastUtil.show("CAMERA granted");
     }
 
     @OnDenied(value = {Manifest.permission.CAMERA})
-    void onDenied() {
-        LogUtils.v("onDenied");
+    void onDeniedC() {
+        ToastUtil.show(" CAMERA onDenied");
     }
 
     @OnNeverAsk(value = {Manifest.permission.CAMERA})
-    void OnNeverAsk() {
-        LogUtils.v("OnNeverAsk");
+    void OnNeverAskC() {
+        ToastUtil.show(" CAMERA OnNeverAsk");
         starSettingActivityForPermission(1000);
     }
 
     @OnShowRationale(value = {Manifest.permission.CAMERA})
-    void OnShowRationale() {
-        LogUtils.v("OnShowRationale");
+    void OnShowRationaleC() {
+        ToastUtil.show(" CAMERA OnShowRationale");
     }
 
-    @OnClick(R.id.get)
-    void get() {
+    @OnClick(R.id.camera)
+    void camera() {
         PermissionCompat.requestPermission(this, new String[]{Manifest.permission.CAMERA});
+    }
+
+    @OnGranted(value = {Manifest.permission.CALL_PHONE})
+    void grantedP() {
+        ToastUtil.show("Phone granted");
+    }
+
+    @OnDenied(value = {Manifest.permission.CALL_PHONE})
+    void onDeniedP() {
+        ToastUtil.show("Phone onDenied");
+    }
+
+    @OnNeverAsk(value = {Manifest.permission.CALL_PHONE})
+    void OnNeverAskP() {
+        ToastUtil.show("Phone OnNeverAsk");
+        starSettingActivityForPermission(1000);
+    }
+
+    @OnShowRationale(value = {Manifest.permission.CALL_PHONE})
+    void OnShowRationaleP() {
+        ToastUtil.show("Phone OnShowRationale");
+    }
+
+
+    @OnClick(R.id.phone)
+    void phone() {
+        PermissionCompat.requestPermission(this, new String[]{Manifest.permission.CALL_PHONE});
+    }
+
+
+    @OnGranted(value = {Manifest.permission.CALL_PHONE, Manifest.permission.CAMERA})
+    void grantedPC() {
+        ToastUtil.show("Phone granted");
+    }
+
+    @OnDenied(value = {Manifest.permission.CALL_PHONE, Manifest.permission.CAMERA})
+    void onDeniedPC() {
+        ToastUtil.show("Phone onDenied");
+    }
+
+    @OnNeverAsk(value = {Manifest.permission.CALL_PHONE, Manifest.permission.CAMERA})
+    void OnNeverAskPC() {
+        ToastUtil.show("Phone OnNeverAsk");
+        starSettingActivityForPermission(1000);
+    }
+
+    @OnShowRationale(value = {Manifest.permission.CALL_PHONE, Manifest.permission.CAMERA})
+    void OnShowRationalePC() {
+        ToastUtil.show("Phone OnShowRationale");
+    }
+
+
+    @OnClick(R.id.phone_c)
+    void phonecamera() {
+        PermissionCompat.requestPermission(this, new String[]{Manifest.permission.CALL_PHONE, Manifest.permission.CAMERA});
+    }
+
+    @OnClick(R.id.no_match)
+    void no_match() {
+        PermissionCompat.requestPermission(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.CAMERA});
     }
 }
