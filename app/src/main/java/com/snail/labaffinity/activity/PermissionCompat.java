@@ -12,4 +12,8 @@ public class PermissionCompat {
     public static void requestPermission(BaseActivity activity, String[] strings, OnGrantedListener listener) {
         activity.requestPermissions(strings, listener);
     }
+
+    public static void requestPermission(BasePermissionCompatFragment activity, String[] strings, OnGrantedListener listener) {
+        activity.requestPermissions(strings, listener);
+    }
 }

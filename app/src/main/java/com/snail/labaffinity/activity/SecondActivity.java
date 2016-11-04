@@ -1,6 +1,7 @@
 package com.snail.labaffinity.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.annotation.ActivityPermission;
@@ -29,6 +30,11 @@ public class SecondActivity extends BaseActivity implements OnGrantedListener<Se
         setContentView(R.layout.second);
     }
 
+    @OnClick(R.id.fragment)
+    void fragment() {
+        Intent intent = new Intent(this, PFragmentActivity.class);
+        startActivity(intent);
+    }
 
     @OnClick(R.id.camera)
     void camera() {
