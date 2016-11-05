@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import com.annotation.FragmentPermission;
 import com.annotation.OnGrantedListener;
 import com.snail.labaffinity.R;
-import com.snail.labaffinity.activity.BasePermissionCompatFragment;
-import com.snail.labaffinity.activity.PermissionCompat;
+import com.snail.labaffinity.permissioin.BasePermissionCompatFragment;
+import com.snail.labaffinity.permissioin.PermissionCompat;
 import com.snail.labaffinity.utils.ToastUtil;
 
 import java.util.Arrays;

@@ -1,6 +1,7 @@
-package com.snail.labaffinity.activity;
+package com.snail.labaffinity.permissioin;
 
 import com.annotation.OnGrantedListener;
+import com.snail.labaffinity.activity.BaseActivity;
 
 /**
  * Author: hzlishang

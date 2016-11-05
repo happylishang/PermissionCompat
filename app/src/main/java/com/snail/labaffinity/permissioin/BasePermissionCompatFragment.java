@@ -1,27 +1,27 @@
-package com.snail.labaffinity.activity;
+package com.snail.labaffinity.permissioin;
 
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.util.SparseArray;
 
 import com.annotation.OnGrantedListener;
 
-public class BasePermissionCompatActivity extends AppCompatActivity {
+public class BasePermissionCompatFragment extends Fragment {
 
 
-    private SparseArray<OnGrantedListener<BasePermissionCompatActivity>> mOnGrantedListeners = new SparseArray<>();
+    private SparseArray<OnGrantedListener<BasePermissionCompatFragment>> mOnGrantedListeners = new SparseArray<>();
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        OnGrantedListener<BasePermissionCompatActivity> listener = mOnGrantedListeners.get(requestCode);
+        OnGrantedListener<BasePermissionCompatFragment> listener = mOnGrantedListeners.get(requestCode);
         if (listener == null)
             return;
         if (PermissionUtils.verifyPermissions(grantResults)) {
             listener.onGranted(this, permissions);
         } else {
-            if (PermissionUtils.shouldShowRequestPermissionRationale(this, permissions)) {
+            if (PermissionUtils.shouldShowRequestPermissionRationale(this.getActivity(), permissions)) {
                 listener.onDenied(this, permissions);
             } else {
                 listener.onNeverAsk(this, permissions);
@@ -30,15 +30,15 @@ public class BasePermissionCompatActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         mOnGrantedListeners.clear();
         mOnGrantedListeners = null;
     }
 
-    public void requestPermissions(final @NonNull String[] permissions, OnGrantedListener<BasePermissionCompatActivity> onGrantedListener) {
+    public void requestPermissions(final @NonNull String[] permissions, OnGrantedListener<BasePermissionCompatFragment> onGrantedListener) {
         int requestCode = getNextRequestCode();
-        ActivityCompat.requestPermissions(this, permissions, requestCode);
+        ActivityCompat.requestPermissions(this.getActivity(), permissions, requestCode);
         mOnGrantedListeners.put(requestCode, onGrantedListener);
     }
 

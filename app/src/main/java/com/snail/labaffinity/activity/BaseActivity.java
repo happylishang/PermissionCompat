@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 
 import com.snail.labaffinity.R;
+import com.snail.labaffinity.permissioin.BasePermissionCompatActivity;
 
 import butterknife.ButterKnife;
 

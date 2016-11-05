@@ -1,4 +1,4 @@
-package com.snail.labaffinity.activity;
+package com.snail.labaffinity.permissioin;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
