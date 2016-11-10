@@ -22,6 +22,7 @@ android {
     }
 }
 
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
@@ -31,8 +32,10 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.github.campusappcn.AndRouter:router:1.2.4'
     compile 'com.jakewharton:butterknife:8.0.1'
-    compile project(':permissioncompat')
     apt 'com.github.campusappcn.AndRouter:compiler:1.2.4'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
-    apt project(':compiler')
+    apt 'com.snail:compiler:0.0.3'
+    compile 'com.snail:annotation:0.0.2'
+    compile 'com.snail:permissioncompat:0.0.3'
+
 }

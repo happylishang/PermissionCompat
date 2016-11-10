@@ -32,7 +32,7 @@ install {
     repositories.mavenInstaller {
         pom {
             project {
-                packaging 'jar'
+                packaging 'aar'
                 // Add your description here
                 name 'Android PermissionCompat'     //项目的描述 你可以多写一点
                 licenses {
@@ -62,7 +62,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "permission-compiler"
+        name = "permission-compat"
         licenses = ["Apache-2.0"]
         userOrg = "happysnail"
         publish = true
