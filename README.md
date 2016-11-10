@@ -1,3 +1,11 @@
 # LabAffinity
 
-主要是做一些测试用，不同的功能测试放在不同的分支，独立，不同的测试也要维护不同readme
+##用法 jcenter库
+
+在app的build.gradle中添加
+
+    apt 'com.snail:compiler:0.0.2'
+    compile 'com.snail:annotation:0.0.2'
+    compile 'com.snail:permissioncompat:0.0.2'
+
+其次
