@@ -3,6 +3,7 @@ package com.snail.labaffinity.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 
 import com.annotation.ActivityPermission;
 import com.annotation.OnDenied;
@@ -32,9 +33,16 @@ public class SecondActivity extends BaseActivity {
         setContentView(R.layout.second);
     }
 
+    private void openCamera(){
+        // 创建新的Intent
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        // 启动视频捕获Intent
+        startActivityForResult(intent, 1000);
+    }
     @OnGranted(value = {Manifest.permission.CAMERA})
     void grantedC() {
         ToastUtil.show("CAMERA granted");
+        openCamera();
     }
 
     @OnDenied(value = {Manifest.permission.CAMERA})
