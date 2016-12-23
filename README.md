@@ -2,6 +2,14 @@
 
 #build.gradle添加依赖
 
+在根build.gradle中添加  classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+	
+    buildscript {
+
+    dependencies {
+      ...
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+	
 在app的build.gradle中添加如下代码，默认开启了jcenter库依赖
 
 
