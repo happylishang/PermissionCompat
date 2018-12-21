@@ -34,7 +34,5 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.0.1'
     apt 'com.github.campusappcn.AndRouter:compiler:1.2.4'
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
-    apt 'com.snail:compiler:0.0.3'
-    compile 'com.snail:permissioncompat:0.0.3'
-
+    compile project(':marshmallowpermission')
 }
