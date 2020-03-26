@@ -1,3 +1,11 @@
+### 用法
+
+1、引入依赖
+
+     implementation 'com.snail:marshmallowpermission:2.0'
+
+2，项目中国使用：
+
 Android 6.0权限适配，采用不可见FragmentDialog方式，减少代码入侵 
 
 
