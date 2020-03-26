@@ -44,7 +44,7 @@ public class IMEIPermissionUtil extends AbstractBasePermissionUtil {
             @Override
             public void onDenied(int requestCode, Map<String, Integer> result) {
 
-                ToastUtil.show("授权失败");
+                ToastUtil.show("拒绝一次");
             }
 
             @Override
