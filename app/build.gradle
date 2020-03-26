@@ -21,6 +21,7 @@ android {
 
 
 dependencies {
+ 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
     implementation "com.android.support:appcompat-v7:28.0.0"
@@ -32,4 +33,6 @@ dependencies {
     annotationProcessor 'com.github.campusappcn.AndRouter:compiler:1.2.8'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.0.1'
     implementation project(':permissioncompat')
+    implementation project(':marshmallowpermission')
+ 
 }
