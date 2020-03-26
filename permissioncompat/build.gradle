@@ -1,11 +1,11 @@
 apply plugin: 'com.android.library'
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
@@ -24,5 +24,48 @@ dependencies {
     compile project(':annotation')
 }
 
-group = GROUP
-version = VERSION_NAME
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+                // Add your description here
+                name 'Android PermissionCompat'     //项目的描述 你可以多写一点
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'snail'        //填写的一些基本信息
+                        name 'snail'
+                        email 'happylishang2956@gmail.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    configurations = ['archives']
+    pkg {
+        repo = "maven"
+        name = "permission-compat"
+        licenses = ["Apache-2.0"]
+        userOrg = "happysnail"
+        publish = true
+        vcsUrl = GIT_URL
+    }
+}
+group = com.snail
+version = 2.0
+
