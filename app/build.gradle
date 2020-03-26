@@ -32,6 +32,6 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.0.1'
     annotationProcessor 'com.github.campusappcn.AndRouter:compiler:1.2.8'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.0.1'
-    implementation project(':marshmallowpermission')
- 
+//    implementation project(':marshmallowpermission')
+    implementation 'com.snail:marshmallowpermission:2.0'
 }
