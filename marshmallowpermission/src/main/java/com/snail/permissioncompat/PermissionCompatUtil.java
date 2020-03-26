@@ -35,7 +35,7 @@ public class PermissionCompatUtil {
      * 对于sdk 在23以下，不需要考虑权限问题， 因为就算是检测到了，你也没有主动的触发手段，因为弹窗是在使用服务的时候才会弹出来的
      */
     public static boolean checkPermissionsMarshmallow(Context context, String... permissions) {
-        return Build.VERSION.SDK_INT < 23 || PermissionUtils.hasSelfPermissions(context, permissions);
+        return Build.VERSION.SDK_INT < 23 || snail.permissioncompat.PermissionUtils.hasSelfPermissions(context, permissions);
     }
 
 
@@ -43,7 +43,7 @@ public class PermissionCompatUtil {
      * 6.0之后的权限检查
      */
     public static boolean checkPermissionMarshmallow(Context context, String permission) {
-        return Build.VERSION.SDK_INT < 23 || PermissionUtils.hasSelfPermissions(context, permission);
+        return Build.VERSION.SDK_INT < 23 || snail.permissioncompat.PermissionUtils.hasSelfPermissions(context, permission);
     }
 
     /**

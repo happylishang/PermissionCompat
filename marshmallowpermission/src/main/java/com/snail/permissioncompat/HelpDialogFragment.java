@@ -30,11 +30,11 @@ public class HelpDialogFragment extends DialogFragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (mOnGrantedListener != null) {
-            if (PermissionUtils.getTargetSdkVersion(this.getActivity()) < 23 && !PermissionUtils.hasSelfPermissions(getActivity(), permissions)) {
+            if (snail.permissioncompat.PermissionUtils.getTargetSdkVersion(this.getActivity()) < 23 && !snail.permissioncompat.PermissionUtils.hasSelfPermissions(getActivity(), permissions)) {
                 mOnGrantedListener.onGranted(requestCode, permissions);
                 return;
             }
-            if (PermissionUtils.verifyPermissions(grantResults)) {
+            if (snail.permissioncompat.PermissionUtils.verifyPermissions(grantResults)) {
                 mOnGrantedListener.onGranted(requestCode, permissions);
             } else {
                 Map<String, Integer> hashMap = new HashMap<>();
@@ -42,7 +42,7 @@ public class HelpDialogFragment extends DialogFragment {
                     hashMap.put(permissions[i], grantResults[i]);
                 }
                 //暂不区分多组权限申请部分选择不再提醒
-                if (!PermissionUtils.shouldShowRequestPermissionRationale(getActivity(), permissions)) {
+                if (!snail.permissioncompat.PermissionUtils.shouldShowRequestPermissionRationale(getActivity(), permissions)) {
                     mOnGrantedListener.onNeverAsk(requestCode, hashMap);
                 } else {
                     mOnGrantedListener.onDenied(requestCode, hashMap);

@@ -1,19 +1,25 @@
 package com.snail.labaffinity.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.snail.permissioncompat.PermissionCompatUtil;
 import com.snail.labaffinity.R;
 import com.snail.labaffinity.service.BackGroundService;
+import com.snail.labaffinity.utils.AppProfile;
 import com.snail.labaffinity.utils.ToastUtil;
+import com.snail.permissioncompat.PermissionCompatUtil;
 import com.snail.permissioncompat.SimpleOnGrantedListener;
+
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,16 +56,30 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.first)
     View mView;
+    private static final String[] PERMISSION = {Manifest.permission.CAMERA};
+
     @OnClick(R.id.first)
     void first() {
-        PermissionCompatUtil.requestPermission(this,new String[]{Manifest.permission.CAMERA},0,new SimpleOnGrantedListener(){
+        PermissionCompatUtil.requestPermission(this, PERMISSION,
+                0, new SimpleOnGrantedListener() {
+                    @SuppressLint("MissingPermission")
+                    @Override
+                    public void onGranted(int requestCode, String[] permissions) {
 
-            @Override
-            public void onGranted(int requestCode, String[] permissions) {
-                super.onGranted(requestCode, permissions);
-                ToastUtil.show("Granted");
-            }
-        });
+                        ToastUtil.show("授权成功");
+                    }
+
+                    @Override
+                    public void onDenied(int requestCode, Map<String, Integer> result) {
+
+                        ToastUtil.show("授权失败");
+                    }
+
+                    @Override
+                    public void onNeverAsk(int requestCode, Map<String, Integer> result) {
+                        ToastUtil.show("永不询问");
+                    }
+                }
+        );
     }
-
 }
