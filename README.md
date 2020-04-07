@@ -2,7 +2,7 @@
 
 1、引入依赖
 
-     implementation 'com.snail:marshmallowpermission:2.0'
+     implementation 'com.snail:marshmallowpermission:2.1'
 
 2，项目使用：
 
