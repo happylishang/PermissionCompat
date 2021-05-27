@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
+apply from:  "../publish.gradle"
 android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
@@ -24,48 +25,3 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${APPCOMPAT_V7_VERSION}"
 }
 
-
-
-install {
-    repositories.mavenInstaller {
-        pom {
-            project {
-                packaging 'aar'
-                // Add your description here
-                name 'Android PermissionCompat'     //项目的描述 你可以多写一点
-                licenses {
-                    license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id 'snail'        //填写的一些基本信息
-                        name 'snail'
-                        email 'happylishang2956@gmail.com'
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-bintray {
-    user = "happylishang2956"
-    key = '7a2ee883da7028f349ca26a43a32efa679bcf2c7'
-    configurations = ['archives']
-    pkg {
-        repo = "maven"
-        name = "permission-compat"
-        licenses = ["Apache-2.0"]
-        userOrg = "happysnail"
-        publish = true
-        vcsUrl = GIT_URL
-    }
-}
-group = 'com.snail'
-version = 2.0

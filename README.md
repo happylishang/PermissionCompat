@@ -2,7 +2,7 @@
 
 1、引入依赖
 
-     implementation 'com.snail:marshmallowpermission:2.1'
+     implementation 'io.github.happylishang:marshmallowpermission:2.1'
 
 2，项目使用：
 
